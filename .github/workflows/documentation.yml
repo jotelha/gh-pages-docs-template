@@ -18,11 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: build_doc
-        run: |
-          cd docs
-          make html SPHINXOPTS="-j auto"
-          cd ..
+      - name: Build docs
+        uses: ammaraskar/sphinx-action@master
+        with:
+          docs-folder: "docs/"
 
       - name: Push changes
         if: github.ref == 'refs/heads/master'
