@@ -41,9 +41,7 @@ jobs:
 
       - name: build docs
         run: |
-          cd docs
-          make html SPHINXOPTS="-j auto"
-          cd ..
+          sphinx-multiversion docs docs/_build
 
       - name: commit documentation changes
         run: |
