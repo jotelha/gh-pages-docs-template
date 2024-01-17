@@ -46,7 +46,7 @@ jobs:
       - name: commit documentation changes
         run: |
           git checkout gh-pages
-          for dirname in docs/_build/versioned/*; do mv "$dirname" "gh-pages/$(basename $dirname)" && git add "gh-pages/$(basename $dirname)"; done
+          for dirname in docs/_build/versioned/*; do mv "$dirname" "$(basename $dirname)" && git add "$(basename $dirname)"; done
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Update documentation" -a || true
@@ -58,5 +58,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           branch: gh-pages
-          directory: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
