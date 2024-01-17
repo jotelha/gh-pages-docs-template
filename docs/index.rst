@@ -6,6 +6,8 @@
 Welcome to gh-pages-docs-template's documentation!
 ==================================================
 
+Version 0.2.0
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
