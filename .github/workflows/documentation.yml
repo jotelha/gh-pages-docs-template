@@ -41,12 +41,12 @@ jobs:
 
       - name: build docs
         run: |
-          sphinx-multiversion docs docs/_build
+          sphinx-multiversion docs docs/_build/versioned
 
       - name: commit documentation changes
         run: |
           git checkout gh-pages
-          for dirname in docs/_build/html/*; do mv "html/$dirname" "$dirname" && git add "$dirname"; done
+          for dirname in docs/_build/versioned/*; do mv "$dirname" "gh-pages/$(basename $dirname)" && git add "gh-pages/$(basename $dirname)"; done
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Update documentation" -a || true
