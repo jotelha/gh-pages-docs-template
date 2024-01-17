@@ -9,7 +9,6 @@ on:
   pull_request:
     branches: [$default-branch]
 
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -35,31 +34,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build docs
-        uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "docs/"
+      - name: prepare dependences
+        run: |
+          pip install -r docs/requirements.txt
 
-      - name: Setup pages
-        uses: actions/configure-pages@v4
+      - name: build docs
+        run: |
+          cd docs
+          make html SPHINXOPTS="-j auto"
+          cd ..
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'docs/_build/html'
-
-  deploy:
-    # Add a dependency to the build job
-    needs: build
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4 
+      - name: commit documentation changes
+        run: |
+          git checkout gh-pages
+          for dirname in docs/_build/html/*; do mv "html/$dirname" "$dirname" && git add "$dirname"; done
+          # git config --local user.email "action@github.com"
+          # git config --local user.name "GitHub Action"
+          git commit -m "Update documentation" -a || true
+          # The above command will fail if no changes were present, so we ignore
+          # that.
