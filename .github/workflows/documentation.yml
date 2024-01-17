@@ -46,7 +46,7 @@ jobs:
       - name: commit documentation changes
         run: |
           git checkout gh-pages
-          for dirname in docs/_build/versioned/*; do mv "$dirname" "$(basename $dirname)" && git add "$(basename $dirname)"; done
+          for dirname in docs/_build/versioned/*; do rm -rf "$(basename $dirname)" || true; mv "$dirname" "$(basename $dirname)" && git add "$(basename $dirname)"; done
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "Update documentation" -a || true
